@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MATRIX_SOLVER_V1 - 3-Var System Solver</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#283044",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "on-error": "#690005",
+                        "secondary": "#b7c8e1",
+                        "inverse-primary": "#565e74",
+                        "inverse-on-surface": "#2d3133",
+                        "surface-container": "#1d2022",
+                        "on-background": "#e0e3e5",
+                        "surface-container-high": "#272a2c",
+                        "on-tertiary": "#00363e",
+                        "on-tertiary-fixed": "#001f25",
+                        "on-surface-variant": "#c6c6cd",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-surface": "#e0e3e5",
+                        "surface-container-low": "#191c1e",
+                        "surface": "#101415",
+                        "on-primary-container": "#798098",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#001b20",
+                        "surface-variant": "#323537",
+                        "on-tertiary-container": "#008ea1",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "tertiary-fixed": "#a2eeff",
+                        "on-secondary-container": "#a9bad3",
+                        "background": "#101415",
+                        "surface-dim": "#101415",
+                        "surface-container-lowest": "#0b0f10",
+                        "on-secondary": "#213145",
+                        "surface-container-highest": "#323537",
+                        "primary-container": "#0f172a",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-primary-fixed": "#131b2e",
+                        "primary": "#bec6e0",
+                        "surface-bright": "#363a3b",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "secondary-container": "#3a4a5f",
+                        "primary-fixed": "#dae2fd",
+                        "surface-tint": "#bec6e0",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-surface": "#e0e3e5",
+                        "tertiary": "#2fd9f4",
+                        "secondary-fixed": "#d3e4fe",
+                        "outline-variant": "#45464d",
+                        "outline": "#909097",
+                        "cyan-400": "#22d3ee",
+                        "slate-950": "#020617",
+                        "slate-900": "#0f172a",
+                        "slate-800": "#1e293b",
+                        "slate-500": "#64748b",
+                        "slate-400": "#94a3b8",
+                        "slate-200": "#e2e8f0"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "mono-data": ["Space Grotesk"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0b0f10; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; }
+        ::-webkit-scrollbar-thumb:hover { background: #2fd9f4; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-6 h-14 bg-slate-950/80 backdrop-blur-md fixed top-0 z-50 border-b border-slate-800/60 shadow-none">
+<div class="flex items-center gap-8">
+<span class="text-lg font-black tracking-tighter text-cyan-400">MATRIX_SOLVER_V1</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-space-grotesk uppercase tracking-widest text-xs text-slate-400 hover:text-cyan-300 transition-colors" href="#">Docs</a>
+<a class="font-space-grotesk uppercase tracking-widest text-xs text-slate-400 hover:text-cyan-300 transition-colors" href="#">API</a>
+<a class="font-space-grotesk uppercase tracking-widest text-xs text-slate-400 hover:text-cyan-300 transition-colors" href="#">Support</a>
+<a class="font-space-grotesk uppercase tracking-widest text-xs text-cyan-400 border-b border-cyan-400 pb-1 hover:text-cyan-300 transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer active:opacity-70">notifications</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer active:opacity-70">settings</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-14 bottom-0 flex flex-col pt-4 bg-slate-950 w-64 border-r border-slate-800/60 z-40">
+<div class="px-6 mb-6">
+<p class="font-space-grotesk text-[10px] uppercase tracking-[0.2em] text-slate-500">Operations</p>
+<p class="font-space-grotesk text-sm font-bold text-cyan-400">Precision Engine</p>
+</div>
+<nav class="flex flex-col">
+<a class="text-slate-500 flex items-center px-4 py-3 hover:bg-slate-900/30 transition-all font-space-grotesk text-sm font-medium group" href="#">
+<span class="material-symbols-outlined mr-3 text-lg group-hover:text-slate-200">calculate</span>
+<span>Solver</span>
+</a>
+<a class="text-slate-500 flex items-center px-4 py-3 hover:bg-slate-900/30 transition-all font-space-grotesk text-sm font-medium group" href="#">
+<span class="material-symbols-outlined mr-3 text-lg group-hover:text-slate-200">swap_horiz</span>
+<span>Transpose</span>
+</a>
+<a class="bg-slate-900/50 text-cyan-400 border-r-2 border-cyan-400 flex items-center px-4 py-3 font-space-grotesk text-sm font-medium" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" style="font-variation-settings: 'FILL' 1;">grid_3x3</span>
+<span>3-Var System</span>
+</a>
+<a class="text-slate-500 flex items-center px-4 py-3 hover:bg-slate-900/30 transition-all font-space-grotesk text-sm font-medium group" href="#">
+<span class="material-symbols-outlined mr-3 text-lg group-hover:text-slate-200">layers</span>
+<span>Scalar</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-14 h-screen w-full flex bg-background">
+<!-- Center Computational Area -->
+<section class="flex-1 overflow-y-auto p-8 flex flex-col gap-8">
+<!-- System Configuration Header -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">3-Variable System Solver</h1>
+<p class="font-body-md text-slate-500 max-w-lg">Advanced linear system workstation with high-precision LU decomposition engine.</p>
+</div>
+<div class="flex items-center gap-6 bg-surface-container-low p-4 rounded-none border border-slate-800/60">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-slate-500">Dimension Rows</span>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center bg-slate-900 border border-slate-700 hover:border-cyan-400 active:scale-95 transition-all text-cyan-400">-</button>
+<span class="font-mono-data text-mono-data px-3 text-on-surface">3</span>
+<button class="w-8 h-8 flex items-center justify-center bg-slate-900 border border-slate-700 hover:border-cyan-400 active:scale-95 transition-all text-cyan-400">+</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-slate-500">Dimension Cols</span>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center bg-slate-900 border border-slate-700 hover:border-cyan-400 active:scale-95 transition-all text-cyan-400">-</button>
+<span class="font-mono-data text-mono-data px-3 text-on-surface">4</span>
+<button class="w-8 h-8 flex items-center justify-center bg-slate-900 border border-slate-700 hover:border-cyan-400 active:scale-95 transition-all text-cyan-400">+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Coefficients Matrix Input Grid -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-label-caps text-label-caps text-cyan-400">Coefficients Matrix [A|B]</h2>
+<span class="font-mono-data text-[10px] text-slate-500 uppercase tracking-widest">A [3x3] | B [3x1]</span>
+</div>
+<div class="grid grid-cols-4 gap-4 p-8 bg-surface-container-lowest border border-slate-800/40 relative">
+<!-- Brackets Decoration -->
+<div class="absolute left-2 top-4 bottom-4 w-2 border-l-2 border-t-2 border-b-2 border-slate-700"></div>
+<div class="absolute right-2 top-4 bottom-4 w-2 border-r-2 border-t-2 border-b-2 border-slate-700"></div>
+<!-- Row 1 -->
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-cyan-400 text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="3.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a11</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="-2.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a12</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="1.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a13</span>
+</div>
+<div class="relative group border-l-2 border-dashed border-slate-700 pl-4">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-tertiary text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="12.00"/>
+<span class="absolute -top-2 left-6 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">b1</span>
+</div>
+<!-- Row 2 -->
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="1.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a21</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="4.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a22</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="-3.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a23</span>
+</div>
+<div class="relative group border-l-2 border-dashed border-slate-700 pl-4">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-tertiary text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="-5.00"/>
+<span class="absolute -top-2 left-6 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">b2</span>
+</div>
+<!-- Row 3 -->
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="2.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a31</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="-1.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a32</span>
+</div>
+<div class="relative group">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-on-surface text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="2.00"/>
+<span class="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">a33</span>
+</div>
+<div class="relative group border-l-2 border-dashed border-slate-700 pl-4">
+<input class="w-full bg-slate-900 border border-slate-800 p-4 font-mono-data text-tertiary text-center focus:ring-0 focus:border-cyan-400 focus:bg-slate-900/80 outline-none transition-all" type="text" value="10.00"/>
+<span class="absolute -top-2 left-6 px-1 bg-surface-container-lowest text-[9px] font-mono-data text-slate-600">b3</span>
+</div>
+</div>
+</div>
+<!-- Live Equation Visualization -->
+<div class="bg-surface-container-low border border-slate-800/60 p-6">
+<h2 class="font-label-caps text-label-caps text-slate-500 mb-4">Live Equation Mapping</h2>
+<div class="flex flex-col gap-4 font-mono-data text-body-lg text-on-background">
+<div class="flex items-center gap-2">
+<span class="text-cyan-400 w-12 text-right">EQ1:</span>
+<span>3x - 2y + 1z = 12</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-cyan-400 w-12 text-right">EQ2:</span>
+<span>1x + 4y - 3z = -5</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-cyan-400 w-12 text-right">EQ3:</span>
+<span>2x - 1y + 2z = 10</span>
+</div>
+</div>
+</div>
+<!-- Action Button Area -->
+<div class="flex justify-center mt-4">
+<button class="bg-cyan-400 text-slate-950 font-label-caps text-label-caps py-4 px-12 flex items-center gap-3 hover:bg-cyan-300 active:scale-95 transition-all shadow-lg shadow-cyan-400/20">
+<span class="material-symbols-outlined font-bold" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                    SOLVE SYSTEM
+                </button>
+</div>
+</section>
+<!-- Right Solution Panel -->
+<aside class="w-80 border-l border-slate-800/60 bg-slate-950 p-6 flex flex-col gap-6 overflow-y-auto">
+<h2 class="font-label-caps text-label-caps text-cyan-400 tracking-widest border-b border-slate-800 pb-4">Solution Set</h2>
+<div class="flex flex-col gap-4">
+<div class="bg-slate-900 border border-slate-800 p-4 flex flex-col gap-1 relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-1 bg-cyan-400"></div>
+<span class="font-label-caps text-[10px] text-slate-500">VARIABLE_X</span>
+<span class="font-mono-data text-2xl text-on-surface">3.0000</span>
+</div>
+<div class="bg-slate-900 border border-slate-800 p-4 flex flex-col gap-1 relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-1 bg-cyan-400"></div>
+<span class="font-label-caps text-[10px] text-slate-500">VARIABLE_Y</span>
+<span class="font-mono-data text-2xl text-on-surface">-1.0000</span>
+</div>
+<div class="bg-slate-900 border border-slate-800 p-4 flex flex-col gap-1 relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-1 bg-cyan-400"></div>
+<span class="font-label-caps text-[10px] text-slate-500">VARIABLE_Z</span>
+<span class="font-mono-data text-2xl text-on-surface">1.0000</span>
+</div>
+</div>
+<div class="mt-4 border-t border-slate-800 pt-6">
+<h3 class="font-label-caps text-label-caps text-slate-500 mb-4 uppercase">Analytics</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-xs text-slate-400">Determinant |A|:</span>
+<span class="font-mono-data text-xs text-on-surface">35.000</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-slate-400">Rank:</span>
+<span class="font-mono-data text-xs text-on-surface">3</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-slate-400">Method:</span>
+<span class="font-mono-data text-[10px] bg-slate-900 px-2 py-1 text-cyan-400">LU DECOMP</span>
+</div>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<button class="w-full border border-slate-700 py-3 font-label-caps text-[10px] text-slate-400 hover:text-white hover:border-slate-500 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                    COPY VECTOR
+                </button>
+<button class="w-full border border-slate-700 py-3 font-label-caps text-[10px] text-slate-400 hover:text-white hover:border-slate-500 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                    EXPORT CSV
+                </button>
+</div>
+</aside>
+</main>
+<!-- Floating Action Background Elements (Decoration only) -->
+<div class="fixed bottom-0 right-0 p-8 pointer-events-none opacity-5">
+<span class="font-mono-data text-[180px] leading-none text-cyan-400 select-none">∑</span>
+</div>
+</body></html>

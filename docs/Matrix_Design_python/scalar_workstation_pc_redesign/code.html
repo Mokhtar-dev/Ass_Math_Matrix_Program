@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SCALAR_CORE_V1 | COMPUTE_ENGINE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#a9bad3",
+                        "on-background": "#e0e3e5",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#2d3133",
+                        "surface-container-highest": "#323537",
+                        "primary": "#bec6e0",
+                        "outline": "#909097",
+                        "on-primary-fixed": "#131b2e",
+                        "surface-tint": "#bec6e0",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-dim": "#101415",
+                        "surface-container-low": "#191c1e",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-tertiary-container": "#008ea1",
+                        "surface-bright": "#363a3b",
+                        "tertiary-fixed-dim": "#2fd9f4",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container-lowest": "#0b0f10",
+                        "background": "#101415",
+                        "primary-fixed": "#dae2fd",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-primary-container": "#798098",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#3a4a5f",
+                        "on-tertiary-fixed": "#001f25",
+                        "on-surface": "#e0e3e5",
+                        "on-error": "#690005",
+                        "tertiary": "#2fd9f4",
+                        "on-primary": "#283044",
+                        "surface-variant": "#323537",
+                        "on-tertiary": "#00363e",
+                        "on-secondary": "#213145",
+                        "inverse-primary": "#565e74",
+                        "secondary": "#b7c8e1",
+                        "on-tertiary-fixed-variant": "#004e5a",
+                        "surface-container-high": "#272a2c",
+                        "on-surface-variant": "#c6c6cd",
+                        "surface-container": "#1d2022",
+                        "inverse-surface": "#e0e3e5",
+                        "primary-container": "#0f172a",
+                        "tertiary-container": "#001b20",
+                        "on-secondary-fixed": "#0b1c30",
+                        "surface": "#101415",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "outline-variant": "#45464d",
+                        "tertiary-fixed": "#a2eeff"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "mono-data": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .grid-technical {
+            background-image: linear-gradient(rgba(100, 116, 139, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 116, 139, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .matrix-input-active {
+            box-shadow: 0 0 10px rgba(47, 217, 244, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-on-background font-body-md selection:bg-tertiary selection:text-tertiary-container">
+<div class="flex h-screen overflow-hidden">
+<!-- SIDE NAV BAR (Left Pane) -->
+<aside class="h-screen w-64 border-r border-slate-800/40 bg-slate-950 flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="text-cyan-400 font-black font-headline-md tracking-tighter">COMPUTE_ENGINE</div>
+<div class="font-space-grotesk text-xs uppercase font-bold text-slate-500 tracking-widest mt-1">v4.2.0_STABLE</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="group flex items-center px-6 py-3 font-space-grotesk text-xs uppercase font-bold text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="calculate">calculate</span>
+                    Solver
+                </a>
+<a class="group flex items-center px-6 py-3 font-space-grotesk text-xs uppercase font-bold text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="swap_horiz">swap_horiz</span>
+                    Transpose
+                </a>
+<a class="group flex items-center px-6 py-3 font-space-grotesk text-xs uppercase font-bold text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="grid_3x3">grid_3x3</span>
+                    3-Var System
+                </a>
+<!-- Active Tab: Scalar -->
+<a class="group flex items-center px-6 py-3 font-space-grotesk text-xs uppercase font-bold text-cyan-400 bg-cyan-950/20 border-r-4 border-cyan-400 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="layers">layers</span>
+                    Scalar
+                </a>
+<a class="group flex items-center px-6 py-3 font-space-grotesk text-xs uppercase font-bold text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined mr-3 text-lg" data-icon="history">history</span>
+                    History
+                </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 bg-cyan-400 text-slate-950 font-label-caps uppercase tracking-widest hover:bg-cyan-300 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                    NEW_TASK
+                </button>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA (Center & Right Pane) -->
+<main class="flex-1 flex flex-col overflow-hidden bg-slate-950 grid-technical">
+<!-- TOP APP BAR -->
+<header class="flex justify-between items-center px-6 h-14 w-full border-b border-slate-800/40 bg-slate-950">
+<div class="text-lg font-bold tracking-tighter text-cyan-400 uppercase font-space-grotesk">SCALAR_CORE_V1</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-slate-900 px-3 py-1 border border-slate-800">
+<span class="material-symbols-outlined text-slate-500 text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none text-xs text-slate-300 focus:ring-0 w-48 uppercase font-mono-data" placeholder="SEARCH_VECTORS..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-slate-400">
+<span class="material-symbols-outlined cursor-pointer hover:text-cyan-400 transition-colors" data-icon="settings">settings</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-cyan-400 transition-colors" data-icon="help">help</span>
+<div class="h-8 w-8 bg-slate-800 border border-slate-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-cyan-400" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<!-- WORKSTATION BODY -->
+<div class="flex-1 flex overflow-hidden">
+<!-- CENTER PANE: Configuration -->
+<section class="flex-1 flex flex-col border-r border-slate-800/40 p-8 overflow-y-auto">
+<div class="mb-8">
+<label class="font-label-caps text-cyan-400 mb-4 block">SCALAR_INPUT (λ)</label>
+<div class="bg-slate-900/50 border border-slate-800 p-6 flex items-baseline gap-4 group focus-within:border-cyan-400/50 transition-all">
+<span class="text-4xl font-light text-cyan-400/50 font-headline-lg">λ</span>
+<input class="bg-transparent border-none text-6xl font-headline-lg text-on-background focus:ring-0 w-full p-0" step="0.1" type="number" value="2.5"/>
+</div>
+</div>
+<div class="mb-8">
+<div class="flex justify-between items-end mb-4">
+<label class="font-label-caps text-cyan-400">MATRIX [A] DEFINITION</label>
+<div class="flex gap-4">
+<div class="flex items-center bg-slate-900 border border-slate-800 px-2 py-1 gap-3">
+<span class="text-[10px] font-label-caps text-slate-500">ROWS(i)</span>
+<button class="text-cyan-400 hover:bg-slate-800 p-0.5"><span class="material-symbols-outlined text-xs" data-icon="remove">remove</span></button>
+<span class="font-mono-data text-xs text-on-background">3</span>
+<button class="text-cyan-400 hover:bg-slate-800 p-0.5"><span class="material-symbols-outlined text-xs" data-icon="add">add</span></button>
+</div>
+<div class="flex items-center bg-slate-900 border border-slate-800 px-2 py-1 gap-3">
+<span class="text-[10px] font-label-caps text-slate-500">COLS(j)</span>
+<button class="text-cyan-400 hover:bg-slate-800 p-0.5"><span class="material-symbols-outlined text-xs" data-icon="remove">remove</span></button>
+<span class="font-mono-data text-xs text-on-background">3</span>
+<button class="text-cyan-400 hover:bg-slate-800 p-0.5"><span class="material-symbols-outlined text-xs" data-icon="add">add</span></button>
+</div>
+</div>
+</div>
+<!-- Matrix Grid -->
+<div class="grid grid-cols-3 gap-px bg-slate-800 border border-slate-800 overflow-hidden shadow-2xl">
+<!-- Matrix Cells -->
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="1.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="0.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="2.5"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="4.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="1.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="0.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="-1.2"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="3.0"/>
+<input class="bg-slate-950 text-center py-6 font-mono-data text-lg border-none focus:bg-slate-900 focus:text-cyan-400 focus:ring-1 focus:ring-cyan-400/50 transition-all" type="text" value="1.0"/>
+</div>
+</div>
+<div class="mt-auto pt-8">
+<button class="group w-full py-4 bg-cyan-400 text-slate-950 font-label-caps text-lg tracking-[0.2em] flex items-center justify-center gap-4 hover:bg-cyan-300 active:scale-[0.99] transition-all">
+                            EXECUTE_SCALAR_MULT
+                            <span class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform" data-icon="rocket_launch">rocket_launch</span>
+</button>
+</div>
+</section>
+<!-- RIGHT PANE: Results & Analysis -->
+<section class="w-96 flex flex-col bg-slate-950/80 backdrop-blur-sm p-6 overflow-y-auto">
+<div class="mb-8">
+<label class="font-label-caps text-slate-500 mb-4 block">PREVIEW_OUTPUT (λ.A)</label>
+<div class="p-6 border border-slate-800 bg-slate-950 relative overflow-hidden">
+<div class="absolute inset-0 grid-technical opacity-20"></div>
+<div class="relative grid grid-cols-3 gap-4 text-center">
+<span class="font-mono-data text-cyan-400">2.5</span>
+<span class="font-mono-data text-cyan-400">0.0</span>
+<span class="font-mono-data text-cyan-400">6.25</span>
+<span class="font-mono-data text-cyan-400">10.0</span>
+<span class="font-mono-data text-cyan-400">2.5</span>
+<span class="font-mono-data text-cyan-400">0.0</span>
+<span class="font-mono-data text-cyan-400">-3.0</span>
+<span class="font-mono-data text-cyan-400">7.5</span>
+<span class="font-mono-data text-cyan-400">2.5</span>
+</div>
+</div>
+</div>
+<div class="mb-8 space-y-4">
+<label class="font-label-caps text-slate-500 block border-b border-slate-800 pb-2">COMPUTED_PROPERTIES</label>
+<div class="flex justify-between items-center">
+<span class="font-mono-data text-xs text-slate-400">DETERMINANT</span>
+<span class="font-mono-data text-sm text-on-background">15.625</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-mono-data text-xs text-slate-400">TRACE</span>
+<span class="font-mono-data text-sm text-on-background">7.5</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-mono-data text-xs text-slate-400">RANK</span>
+<span class="font-mono-data text-sm text-on-background">3</span>
+</div>
+</div>
+<div class="mb-8 space-y-4">
+<label class="font-label-caps text-slate-500 block border-b border-slate-800 pb-2">TECHNICAL_METRICS</label>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-mono-data text-[10px] text-slate-500 uppercase">Compute Latency</span>
+<span class="font-mono-data text-[10px] text-cyan-400">0.02ms</span>
+</div>
+<div class="h-1 bg-slate-900 w-full">
+<div class="h-1 bg-cyan-400 w-1/4"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-mono-data text-[10px] text-slate-500 uppercase">Memory Usage</span>
+<span class="font-mono-data text-[10px] text-cyan-400">128 bytes</span>
+</div>
+<div class="h-1 bg-slate-900 w-full">
+<div class="h-1 bg-cyan-400 w-1/12"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="bg-cyan-950/20 border border-cyan-900/40 p-4">
+<div class="flex items-center gap-3 text-cyan-400 mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="info">info</span>
+<span class="font-label-caps text-[10px]">SYSTEM_ADVISORY</span>
+</div>
+<p class="font-body-md text-xs text-slate-400 leading-relaxed">
+                                Resulting matrix λ.A is non-singular. Inverse operations available in secondary modules.
+                            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- STATUS FOOTER -->
+<footer class="h-8 border-t border-slate-800/40 bg-slate-950 flex items-center justify-between px-6">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+<span class="font-mono-data text-[10px] text-slate-500">ENGINE_READY</span>
+</div>
+<span class="font-mono-data text-[10px] text-slate-700">|</span>
+<span class="font-mono-data text-[10px] text-slate-500">TPS: 12.4k</span>
+</div>
+<div class="font-mono-data text-[10px] text-slate-500 uppercase tracking-tighter">
+                    UTC: 2024-05-22 14:02:44 // LOC: 0x442A
+                </div>
+</footer>
+</main>
+</div>
+</body></html>
